@@ -1,0 +1,4 @@
+Homework no 4, using 2 Piezo Buzzers (1 active and 1 passive), 1 Button and 2 100Ohms Rezistors;
+
+The passive buzzer detects knock from the user (knockTreshold controls the intensity) and, in 5 seconds time, starts the active buzzer with a standard Buzz tone (HIGH). 
+The user then has to press the button in order for the active buzzer to stop.
