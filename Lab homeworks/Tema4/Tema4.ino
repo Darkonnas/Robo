@@ -2,12 +2,6 @@ const int knockPin = A0;
 const int buzzerPin = 8;
 const int buttonPin = 2;
 
-void setup() {
-  pinMode(buzzerPin, OUTPUT);
-  pinMode(buttonPin, INPUT_PULLUP);
-  Serial.begin(9600);
-}
-
 bool buzzerActive = false;
 long int lastKnock = 0;
 
@@ -18,6 +12,12 @@ const long int knockWait = 5000;
 const int buzzerInterval = 100;
 long int lastBuzzerEvent = 0;
 bool buzzerState = false;
+
+void setup() {
+  pinMode(buzzerPin, OUTPUT);
+  pinMode(buttonPin, INPUT_PULLUP);
+  Serial.begin(9600);
+}
 
 void loop() {
   if(buzzerActive) {
