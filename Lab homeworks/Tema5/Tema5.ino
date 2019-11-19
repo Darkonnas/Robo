@@ -81,6 +81,7 @@ void showDigit(int num) {
 	digitalWrite(digits[num], LOW);
 }
 
+// clears the display no. received as param
 void clearDigit(int num) {
 	showDigit(num);
 	for (uint8_t i = 0; i < segSize; ++i) {
@@ -102,9 +103,9 @@ void setup() {
 
 // the loop function runs over and over again until power down or reset
 void loop() {
-	if (selectedDigit == noOfDisplays) {
+	if (selectedDigit == noOfDisplays) { //no digit is selected => blinking mode
 		joyButton_xValue = analogRead(joyButton_xPin);
-		if (joyButton_xValue < joyButton_xValue_minTreshold && joyButton_moved == false) {
+		if (joyButton_xValue < joyButton_xValue_minTreshold && joyButton_moved == false) { //change digit to the left and update blink info
 			if (blinkingDigit > 0)
 				--blinkingDigit;
 			else
@@ -113,7 +114,7 @@ void loop() {
 			blinkingDigit_lastBlink = millis();
 			joyButton_moved = true;
 		}
-		if (joyButton_xValue > joyButton_xValue_maxTreshold&& joyButton_moved == false) {
+		if (joyButton_xValue > joyButton_xValue_maxTreshold&& joyButton_moved == false) { //change digit to the right and update blink info
 			if (blinkingDigit < noOfDisplays - 1)
 				++blinkingDigit;
 			else
@@ -122,14 +123,14 @@ void loop() {
 			blinkingDigit_lastBlink = millis();
 			joyButton_moved = true;
 		}
-		if (joyButton_xValue >= joyButton_xValue_minTreshold && joyButton_xValue <= joyButton_xValue_maxTreshold)
+		if (joyButton_xValue >= joyButton_xValue_minTreshold && joyButton_xValue <= joyButton_xValue_maxTreshold) //idle joybutton position
 			joyButton_moved = false;
-		if (millis() - blinkingDigit_lastBlink >= blinkingDigit_blinkInterval) {
+		if (millis() - blinkingDigit_lastBlink >= blinkingDigit_blinkInterval) { //update blink info based on time elapsed since last update
 			blinkingDigit_lastBlink = millis();
 			blinkingDigit_blinkState = !blinkingDigit_blinkState;
 			//Serial.println("Blink at " + String(millis()));
 		}
-		if (millis() - lastFlush >= flushInterval) {
+		if (millis() - lastFlush >= flushInterval) { //use the display digits (this is the alternative to using delay()
 			if (currentDigit == blinkingDigit && blinkingDigit_blinkState == false)
 				clearDigit(currentDigit);
 			else
@@ -141,25 +142,25 @@ void loop() {
 				++currentDigit;
 		}
 	}
-	else {
+	else { //some digit is selected
 		joyButton_yValue = analogRead(joyButton_yPin);
-		if (joyButton_yValue < joyButton_yValue_minTreshold && joyButton_moved == false) {
+		if (joyButton_yValue < joyButton_yValue_minTreshold && joyButton_moved == false) { //decrease selected digit's value
 			if (currentDigitsValues[selectedDigit] > 0)
 				--currentDigitsValues[selectedDigit];
 			else
 				currentDigitsValues[selectedDigit] = noOfDigits - 1;
 			joyButton_moved = true;
 		}
-		if (joyButton_yValue > joyButton_yValue_maxTreshold&& joyButton_moved == false) {
+		if (joyButton_yValue > joyButton_yValue_maxTreshold&& joyButton_moved == false) { //incresease selected digit's value
 			if (currentDigitsValues[selectedDigit] < noOfDigits - 1)
 				++currentDigitsValues[selectedDigit];
 			else
 				currentDigitsValues[selectedDigit] = 0;
 			joyButton_moved = true;
 		}
-		if (joyButton_yValue >= joyButton_yValue_minTreshold && joyButton_yValue <= joyButton_yValue_maxTreshold)
+		if (joyButton_yValue >= joyButton_yValue_minTreshold && joyButton_yValue <= joyButton_yValue_maxTreshold) //idle joybutton position
 			joyButton_moved = false;
-		if (millis() - lastFlush >= flushInterval) {
+		if (millis() - lastFlush >= flushInterval) { //use the display digits (this is the alternative to using delay()
 			if (currentDigit == selectedDigit)
 				displayDigit(currentDigit, currentDigitsValues[currentDigit], true);
 			else
@@ -172,13 +173,13 @@ void loop() {
 		}
 	}
 	joyButton_pushValue = !digitalRead(joyButton_pushPin);
-	if (joyButton_pushValue != joyButton_lastPushValue) {
+	if (joyButton_pushValue != joyButton_lastPushValue) { //check for pushes of the joybutton
 		if (joyButton_pushValue == true) {
-			if (selectedDigit == noOfDisplays) {
+			if (selectedDigit == noOfDisplays) { //if there is no digit selected, select the current blinking one
 				selectedDigit = blinkingDigit;
 				blinkingDigit = noOfDisplays;
 			}
-			else {
+			else { //otherwise, deselect the selected digit and update blink info
 				blinkingDigit = selectedDigit;
 				selectedDigit = noOfDisplays;
 				blinkingDigit_blinkState = true;
