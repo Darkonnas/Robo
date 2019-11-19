@@ -1,0 +1,13 @@
+Components: 
+- Arduino Uno board
+- Joybutton x 1
+- 4 digit 7 segment display x 1
+- 1k Ohm resistor x 4 (used for 4D7SD D1..4 Digit Selector pins)
+- lots of cables
+
+Synopsis:
+-The X Axis of the Joybutton controls the "blinkingDigit" i.e what digit is currently under observation, if no digit is already selected
+  ->The "blinkingDigit" blinks at a constant interval, signalling its digit
+-The Y Axis of the Joybutton controls the value of the current selected digit, if one is selected
+  ->The selected digit will have its decimal point active, signalling its selection
+-The Pushbutton of the Joybutton selected/ deselects the current "blinkingDigit" or "selectedDigit" respectively
