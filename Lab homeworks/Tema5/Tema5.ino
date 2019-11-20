@@ -12,7 +12,9 @@ int joyButton_yValue_minTreshold = 400;
 int joyButton_yValue_maxTreshold = 600;
 bool joyButton_pushValue;
 bool joyButton_moved = false;
+uint32_t joyButton_lastDebounce = 0;
 bool joyButton_lastPushValue;
+uint32_t joyButton_pushDebounceInterval = 10;
 
 //4 digit 7 segment display
 
@@ -172,20 +174,24 @@ void loop() {
 				++currentDigit;
 		}
 	}
-	joyButton_pushValue = !digitalRead(joyButton_pushPin);
-	if (joyButton_pushValue != joyButton_lastPushValue) { //check for pushes of the joybutton
-		if (joyButton_pushValue == true) {
-			if (selectedDigit == noOfDisplays) { //if there is no digit selected, select the current blinking one
-				selectedDigit = blinkingDigit;
-				blinkingDigit = noOfDisplays;
-			}
-			else { //otherwise, deselect the selected digit and update blink info
-				blinkingDigit = selectedDigit;
-				selectedDigit = noOfDisplays;
-				blinkingDigit_blinkState = true;
-				blinkingDigit_lastBlink = millis();
-			}
-		}
-		joyButton_lastPushValue = joyButton_pushValue;
-	}
+  if(millis() - joyButton_lastDebounce >= joyButton_pushDebounceInterval) {
+    joyButton_lastDebounce = millis();
+  	joyButton_pushValue = !digitalRead(joyButton_pushPin);
+  	if (joyButton_pushValue != joyButton_lastPushValue) { //check for pushes of the joybutton
+  		if (joyButton_pushValue == true) {
+        Serial.println(joyButton_pushValue);
+  			if (selectedDigit == noOfDisplays) { //if there is no digit selected, select the current blinking one
+  				selectedDigit = blinkingDigit;
+  				blinkingDigit = noOfDisplays;
+  			}
+  			else { //otherwise, deselect the selected digit and update blink info
+  				blinkingDigit = selectedDigit;
+  				selectedDigit = noOfDisplays;
+  				blinkingDigit_blinkState = true;
+  				blinkingDigit_lastBlink = millis();
+  			}
+  		}
+  		joyButton_lastPushValue = joyButton_pushValue;
+  	}
+  }
 }
