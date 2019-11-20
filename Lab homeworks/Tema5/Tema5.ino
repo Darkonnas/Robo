@@ -191,7 +191,7 @@ void loop() {
   				blinkingDigit_lastBlink = millis();
   			}
   		}
-  		joyButton_lastPushValue = joyButton_pushValue;
+		joyButton_lastPushValue = joyButton_pushValue;
   	}
   }
 }
