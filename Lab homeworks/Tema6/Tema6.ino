@@ -169,7 +169,7 @@ void loop() {
 						LCD.print(String(scores[0].Score));
 						if (count > 1) {
 							LCD.setCursor(0, 1);
-							LCD.print("1. " + String(scores[1].Player));
+							LCD.print("2. " + String(scores[1].Player));
 							for (int i = 0; i < LCD_width - 5 - strlen(scores[1].Player); ++i)
 								LCD.print(' ');
 							LCD.print(String(scores[1].Score));
