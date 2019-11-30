@@ -1,0 +1,42 @@
+Video on how to use: https://youtu.be/D_5_7Lr5Y2k
+
+Components:
+- Arduino Uno Board x 1
+- 16 by 2 LCD x 1
+- Joystick x 1
+- Potentiometer x 1
+- 220 Ohm resistor x 1
+- Lots of cable
+
+Synopsis:
+
+The menu displays 3 choices: "Start", "Setup" and "HighScores";
+- To navigate between the choices use the X axis of the Joystick;
+- In order to access the selected choice, click the Joystick.
+
+Start:
+- Only able to begin if you went through initial settings first (personal touch, can easily be removed by removing an if-clause);
+- Starts the game at the selected level, with score = level * 3;
+- The level is incremented each 5 seconds, with the score being updated at the same time;
+- Game (currently) ends after 10 seconds => Maximum number of levels to complete = 2, Maximum score = (startingLevel + 2) * 3;
+- When game ends, a message is displayed which asks the player to click the Joystick in order to return to the Menu screen;
+- Before returning, the game checks whether the score obtained can be added to the HighScore board, and does so if it qualifies as a high score.
+
+Setup:
+- Firstly, the player must choose a name (optional);
+- The player uses the Y axis to cycle through capital letters of the english alphabet, and the X axis to select which position to edit;
+- When done, the player must click the Joystick;
+- The selected name gets saved as the playerName; if no name was selected, the game sets the name to "UNKNOWN";
+- Secondly, the player must select the starting level by using the Y axis once again;
+- When done, the player must click the Joystick and will be returned to the Menu screen.
+
+HighScores:
+- Display the top 10 (can be edited) scores obtained in the game, as well as the name of the player that has obtained the score;
+- The player can use the Y axis to cycle through HighScore pages (only 2 scores can be displayed on the LCD);
+- When done, the player must click the Joystick to return to the Menu screen.
+
+Features:
+- Highscore is always saved and read from the board's EEPROM;
+- The game is easily configurable with easy-to-follow code lines;
+- No unnecessary screen refreshes are being done for the LCD;
+- No delay() used, everything controlled using millis().
