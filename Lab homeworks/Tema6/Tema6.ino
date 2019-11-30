@@ -107,7 +107,8 @@ void setup() {
   LCD.print(Menu_BottomRow);
   Serial.begin(9600);
   EEPROM.get(0, count);
-  EEPROM.get(1, scores);
+  if(count != 0)
+    EEPROM.get(1, scores);
 }
 
 // the loop function runs over and over again until power down or reset
@@ -145,6 +146,7 @@ void loop() {
           break;
         case Choices::MENU_SETUP:
           currentScreen = Screens::SETUP;
+          pos = 0;
           LCD.clear();
           LCD.setCursor(0, 0);
           LCD.print(Setup_TopRow);
