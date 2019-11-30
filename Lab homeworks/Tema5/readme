@@ -1,5 +1,5 @@
 Components: 
-- Arduino Uno board
+- Arduino Uno board x 1
 - Joybutton x 1
 - 4 digit 7 segment display x 1
 - 1k Ohm resistor x 4 (used for 4D7SD D1..4 Digit Selector pins)
