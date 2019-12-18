@@ -139,31 +139,41 @@ void sinkTiles() {
 }
 
 void playZone(const int8_t& zone) {
+  bool wrongOrder = false;
   int8_t tileFound = 4;
   for (int i = 0; i < 4; ++i) {
-    if (screenTiles[i].Size().x() > 0 && screenTiles[i].Position().y() / 2 == zone && screenTiles[i].Position().x() > -3 && screenTiles[i].Position().x() < 6) {
-      tileFound = i;
-      break;
+    if (screenTiles[i].Size().x() > 0 && screenTiles[i].Position().x() > -3 && screenTiles[i].Position().x() < 6) {
+      if (screenTiles[i].Position().y() / 2 == zone) {
+        tileFound = i;
+        break;
+      }
+      else
+        wrongOrder = true;
     }
   }
+  //Serial.print(wrongOrder);
   if (tileFound != 4) {
-    noTone(buzzerPin);
-    tone(buzzerPin, screenTiles[tileFound].Pitch(), currentSong.TimeUnit() / speedMult);
-    for (int i = max(screenTiles[tileFound].Position().x(), 0); i < max(screenTiles[tileFound].Position().x(), 0) + screenTiles[tileFound].Size().x(); ++i)
-      for (int j = screenTiles[tileFound].Position().y(); j < screenTiles[tileFound].Position().y() + screenTiles[tileFound].Size().y(); ++j)
-        ledControl.setLed(0, i, j, false);
-    screenTiles[tileFound].Size().x() = 0;
-    ++currentScore;
-    LCD.clear();
-    LCD.setCursor(0, 0);
-    LCD.print(Start_TopRow);
-    LCD.print(currentSong.Name());
-    LCD.setCursor(0, 1);
-    LCD.print(Start_BottomRow);
-    LCD.print(String(currentScore));
+    if (!wrongOrder) {
+      noTone(buzzerPin);
+      tone(buzzerPin, screenTiles[tileFound].Pitch(), currentSong.TimeUnit() / speedMult);
+      for (int i = max(screenTiles[tileFound].Position().x(), 0); i < max(screenTiles[tileFound].Position().x(), 0) + screenTiles[tileFound].Size().x(); ++i)
+        for (int j = screenTiles[tileFound].Position().y(); j < screenTiles[tileFound].Position().y() + screenTiles[tileFound].Size().y(); ++j)
+          ledControl.setLed(0, i, j, false);
+      screenTiles[tileFound].Size().x() = 0;
+      ++currentScore;
+      LCD.clear();
+      LCD.setCursor(0, 0);
+      LCD.print(Start_topRow);
+      LCD.print(currentSong.Name());
+      LCD.setCursor(0, 1);
+      LCD.print(Start_bottomRow);
+      LCD.print(currentScore);
+    }
+  } else {
+    tileMissed = true;
+    return;
   }
   needsReset[zone] = true;
-  return;
 }
 
 int8_t lastRandom = -1;
@@ -190,12 +200,14 @@ void playGame() {
       currentScreen = Screens::END;
       LCD.clear();
       LCD.setCursor(0, 0);
-      LCD.print(End_TopRow1);
+      LCD.print(End_topRow1);
       LCD.setCursor(0, 1);
-      LCD.print(End_BottomRow1);
-      LCD.print(String(currentScore));
+      LCD.print(End_bottomRow1);
+      LCD.print(currentScore);
       End_lastTime = millis();
       tileMissed = false;
+      for (int i = 0; i < 4; ++i)
+        screenTiles[i] = Tile();
       if (currentScore > 0) {
         for (int i = 0; i < 10; ++i) {
           if (scores[chosenSongID][i].Score < currentScore) {

@@ -49,25 +49,25 @@ bool choiceChanged = false;
 
 //Menu screen
 
-String Menu_TopRow = ">Play     Setup ";
-String Menu_BottomRow = "   HighScores   ";
+String Menu_topRow = ">Play     Setup ";
+String Menu_bottomRow = "   HighScores   ";
 
 //Start screen
 
-String Start_TopRow = " Song: ";
-String Start_BottomRow = "   Score: ";
+String Start_topRow = " Song: ";
+String Start_bottomRow = "   Score: ";
 
 //Setup screen
 
-String Setup_TopRow = " Name: ";
-String Setup_BottomRow = " Song: ";
-uint8_t setupStep;
+String Setup_topRow = " Name: ";
+String Setup_bottomRow = " Song: ";
+uint8_t Setup_step;
 uint8_t pos = 0;
-const uint8_t name_maxLength = LCD_width - Setup_TopRow.length();
+const uint8_t name_maxLength = LCD_width - Setup_topRow.length();
 String chosenName = "";
 uint8_t chosenSongID;
 uint8_t maxSongID = songNo;
-const uint16_t pos_BlinkInterval = 375;
+const uint16_t pos_blinkInterval = 375;
 uint32_t pos_lastBlink = 0;
 bool pos_state = true;
 uint8_t chosenSong;
@@ -76,7 +76,7 @@ bool completedSetup = false;
 
 //HighScore screen
 
-String HighScore_TopRow;
+String HighScore_topRow;
 int8_t tab, line;
 
 struct HighScore {
@@ -88,12 +88,12 @@ HighScore scores[sizeof(Songs) / sizeof(Song)][10];
 
 //End screen
 
-String End_TopRow1 = "Congratulations!";
-String End_BottomRow1 = "Final score: ";
+String End_topRow1 = "Congratulations!";
+String End_bottomRow1 = "Final score: ";
 const int16_t End_Timeout = 5000;
 int32_t End_lastTime;
-String End_TopRow2 = "Press the Button";
-String End_BottomRow2 = "  to continue.  ";
+String End_topRow2 = "Press the Button";
+String End_bottomRow2 = "  to continue.  ";
 const int16_t End_blinkDelay = 1000;
 int32_t End_lastBlink;
 bool End_blinkState;
@@ -136,9 +136,9 @@ void displayMenu() {
               pos = 0;
               LCD.clear();
               LCD.setCursor(0, 0);
-              LCD.print(Setup_TopRow);
+              LCD.print(Setup_topRow);
               LCD.setCursor(0, 1);
-              LCD.print(Setup_BottomRow + chosenSongID);
+              LCD.print(Setup_bottomRow + chosenSongID);
               break;
             case Choices::MENU_HIGHSCORES:
               currentScreen = Screens::HIGHSCORES;
@@ -157,11 +157,11 @@ void displayMenu() {
                   LCD.print(' ');
                 LCD.print(Songs[tab].Name());
                 LCD.setCursor(0, 1);
-                LCD.print(String(line + 1));
+                LCD.print(line + 1);
                 LCD.print(". ");
                 LCD.print(scores[tab][line].Player);
                 LCD.print(' ');
-                LCD.print(String(scores[tab][line].Score));
+                LCD.print(scores[tab][line].Score);
               } else {
                 LCD.clear();
                 LCD.setCursor(0, 0);
@@ -224,40 +224,40 @@ void displayMenu() {
           choiceChanged = false;
           switch (currentChoice) {
             case Choices::MENU_START:
-              Menu_TopRow = ">Play     Setup ";
-              Menu_BottomRow = "   HighScores  ";
+              Menu_topRow = ">Play     Setup ";
+              Menu_bottomRow = "   HighScores  ";
               break;
             case Choices::MENU_SETUP:
-              Menu_TopRow = " Play    >Setup ";
-              Menu_BottomRow = "   HighScores   ";
+              Menu_topRow = " Play    >Setup ";
+              Menu_bottomRow = "   HighScores   ";
               break;
             case Choices::MENU_HIGHSCORES:
-              Menu_TopRow = " Play     Setup ";
-              Menu_BottomRow = "  >HighScores   ";
+              Menu_topRow = " Play     Setup ";
+              Menu_bottomRow = "  >HighScores   ";
               break;
             default:
               break;
           }
           LCD.clear();
           LCD.setCursor(0, 0);
-          LCD.print(Menu_TopRow);
+          LCD.print(Menu_topRow);
           LCD.setCursor(0, 1);
-          LCD.print(Menu_BottomRow);
+          LCD.print(Menu_bottomRow);
         }
       }
       break;
     case Screens::START:
       LCD.clear();
       LCD.setCursor(0, 0);
-      LCD.print(Start_TopRow);
+      LCD.print(Start_topRow);
       LCD.print(currentSong.Name());
       LCD.setCursor(0, 1);
-      LCD.print(Start_BottomRow);
-      LCD.print(String(currentScore));
+      LCD.print(Start_bottomRow);
+      LCD.print(currentScore);
       gameRunning = true;
       break;
     case Screens::SETUP:
-      switch (setupStep) {
+      switch (Setup_step) {
         case 0:
           if (choiceChanged == false && Joybutton_swValue == true) {
             if (Joybutton_swPushed == false) {
@@ -266,7 +266,7 @@ void displayMenu() {
               if (chosenName.length() == 0)
                 chosenName = "UNKNOWN";
               Joybutton_swPushed = true;
-              setupStep = 1;
+              Setup_step = 1;
               pos_state = true;
               pos_lastBlink = millis();
             }
@@ -323,12 +323,12 @@ void displayMenu() {
             }
             if (choiceChanged == true && Joybutton_xValue >= Joybutton_xMinTreshold && Joybutton_xValue <= Joybutton_xMaxTreshold && Joybutton_yValue >= Joybutton_yMinTreshold && Joybutton_yValue <= Joybutton_yMaxTreshold)
               choiceChanged = false;
-            if (millis() - pos_lastBlink >= pos_BlinkInterval) {
+            if (millis() - pos_lastBlink >= pos_blinkInterval) {
               LCD.clear();
               pos_lastBlink = millis();
               pos_state = !pos_state;
               LCD.setCursor(0, 0);
-              LCD.print(Setup_TopRow);
+              LCD.print(Setup_topRow);
               if (pos_state == true)
                 LCD.print(chosenName);
               else {
@@ -337,7 +337,7 @@ void displayMenu() {
                 LCD.print(chosenName.substring(pos + 1, chosenName.length()));
               }
               LCD.setCursor(0, 1);
-              LCD.print(Setup_BottomRow);
+              LCD.print(Setup_bottomRow);
               LCD.print(Songs[chosenSongID].Name());
             }
           }
@@ -346,16 +346,16 @@ void displayMenu() {
           if (choiceChanged == false && Joybutton_swValue == true) {
             if (Joybutton_swPushed == false) {
               Joybutton_swPushed = true;
-              setupStep = 0;
+              Setup_step = 0;
               completedSetup = true;
               pos_state = true;
               pos_lastBlink = millis();
               currentScreen = Screens::MENU;
               LCD.clear();
               LCD.setCursor(0, 0);
-              LCD.print(Menu_TopRow);
+              LCD.print(Menu_topRow);
               LCD.setCursor(0, 1);
-              LCD.print(Menu_BottomRow);
+              LCD.print(Menu_bottomRow);
             }
           }
           else {
@@ -375,15 +375,15 @@ void displayMenu() {
             }
             if (choiceChanged == true && Joybutton_yValue >= Joybutton_yMinTreshold && Joybutton_yValue <= Joybutton_yMaxTreshold)
               choiceChanged = false;
-            if (millis() - pos_lastBlink >= pos_BlinkInterval) {
+            if (millis() - pos_lastBlink >= pos_blinkInterval) {
               LCD.clear();
               pos_lastBlink = millis();
               pos_state = !pos_state;
               LCD.setCursor(0, 0);
-              LCD.print(Setup_TopRow);
+              LCD.print(Setup_topRow);
               LCD.print(chosenName);
               LCD.setCursor(0, 1);
-              LCD.print(Setup_BottomRow);
+              LCD.print(Setup_bottomRow);
               if (pos_state == true)
                 LCD.print(Songs[chosenSongID].Name());
             }
@@ -400,9 +400,9 @@ void displayMenu() {
           currentScreen = Screens::MENU;
           LCD.clear();
           LCD.setCursor(0, 0);
-          LCD.print(Menu_TopRow);
+          LCD.print(Menu_topRow);
           LCD.setCursor(0, 1);
-          LCD.print(Menu_BottomRow);
+          LCD.print(Menu_bottomRow);
         }
       }
       else {
@@ -438,11 +438,11 @@ void displayMenu() {
             LCD.print(' ');
           LCD.print(Songs[tab].Name());
           LCD.setCursor(0, 1);
-          LCD.print(String(line + 1));
+          LCD.print(line + 1);
           LCD.print(". ");
           LCD.print(scores[tab][line].Player);
           LCD.print(' ');
-          LCD.print(String(scores[tab][line].Score));
+          LCD.print(scores[tab][line].Score);
         }
       }
       break;
@@ -453,18 +453,18 @@ void displayMenu() {
           currentScreen = Screens::MENU;
           LCD.clear();
           LCD.setCursor(0, 0);
-          LCD.print(Menu_TopRow);
+          LCD.print(Menu_topRow);
           LCD.setCursor(0, 1);
-          LCD.print(Menu_BottomRow);
+          LCD.print(Menu_bottomRow);
         }
         if (millis() - End_lastBlink >= End_blinkDelay) {
           End_lastBlink = millis();
           End_blinkState = !End_blinkState;
           if (End_blinkState) {
             LCD.setCursor(0, 0);
-            LCD.print(End_TopRow2);
+            LCD.print(End_topRow2);
             LCD.setCursor(0, 1);
-            LCD.print(End_BottomRow2);
+            LCD.print(End_bottomRow2);
           } else {
             LCD.clear();
           }

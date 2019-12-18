@@ -16,10 +16,11 @@ void setup() {
   LCD.begin(LCD_width, LCD_height);
   LCD.clear();
   LCD.setCursor(0, 0);
-  LCD.print(Menu_TopRow);
+  LCD.print(Menu_topRow);
   LCD.setCursor(0, 1);
-  LCD.print(Menu_BottomRow);
+  LCD.print(Menu_bottomRow);
   EEPROM.get(0, scores);
+ // Serial.begin(9600);
 }
 
 void clearEEPROM() {
