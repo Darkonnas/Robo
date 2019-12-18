@@ -156,9 +156,11 @@ void playZone(const int8_t& zone) {
     ++currentScore;
     LCD.clear();
     LCD.setCursor(0, 0);
-    LCD.print(Start_TopRow + currentSong.Name());
+    LCD.print(Start_TopRow);
+    LCD.print(currentSong.Name());
     LCD.setCursor(0, 1);
-    LCD.print(Start_BottomRow + String(currentScore));
+    LCD.print(Start_BottomRow);
+    LCD.print(String(currentScore));
   }
   needsReset[zone] = true;
   return;
@@ -190,7 +192,8 @@ void playGame() {
       LCD.setCursor(0, 0);
       LCD.print(End_TopRow1);
       LCD.setCursor(0, 1);
-      LCD.print(End_BottomRow1 + String(currentScore));
+      LCD.print(End_BottomRow1);
+      LCD.print(String(currentScore));
       End_lastTime = millis();
       tileMissed = false;
       if (currentScore > 0) {

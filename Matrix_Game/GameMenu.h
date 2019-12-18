@@ -153,9 +153,15 @@ void displayMenu() {
                 line = 0;
                 LCD.clear();
                 LCD.setCursor(0, 0);
+                for (int i = 0; i < (16 - Songs[tab].Name().length()) / 2; ++i)
+                  LCD.print(' ');
                 LCD.print(Songs[tab].Name());
                 LCD.setCursor(0, 1);
-                LCD.print(String(line + 1) + ". " + scores[tab][line].Player + ' ' + String(scores[tab][line].Score));
+                LCD.print(String(line + 1));
+                LCD.print(". ");
+                LCD.print(scores[tab][line].Player);
+                LCD.print(' ');
+                LCD.print(String(scores[tab][line].Score));
               } else {
                 LCD.clear();
                 LCD.setCursor(0, 0);
@@ -243,17 +249,17 @@ void displayMenu() {
     case Screens::START:
       LCD.clear();
       LCD.setCursor(0, 0);
-      Serial.println(Start_TopRow + String(currentSong.Name()));
-      LCD.print(Start_TopRow + currentSong.Name());
+      LCD.print(Start_TopRow);
+      LCD.print(currentSong.Name());
       LCD.setCursor(0, 1);
-      LCD.print(Start_BottomRow + String(currentScore));
+      LCD.print(Start_BottomRow);
+      LCD.print(String(currentScore));
       gameRunning = true;
       break;
     case Screens::SETUP:
       switch (setupStep) {
         case 0:
           if (choiceChanged == false && Joybutton_swValue == true) {
-            //Serial.println(String(Joybutton_swPushed) + ' ' + String(Joybutton_swValue));
             if (Joybutton_swPushed == false) {
               while (chosenName[chosenName.length() - 1] == ' ')
                 chosenName = chosenName.substring(0, chosenName.length() - 1);
@@ -331,7 +337,8 @@ void displayMenu() {
                 LCD.print(chosenName.substring(pos + 1, chosenName.length()));
               }
               LCD.setCursor(0, 1);
-              LCD.print(Setup_BottomRow + Songs[chosenSongID].Name());
+              LCD.print(Setup_BottomRow);
+              LCD.print(Songs[chosenSongID].Name());
             }
           }
           break;
@@ -373,7 +380,8 @@ void displayMenu() {
               pos_lastBlink = millis();
               pos_state = !pos_state;
               LCD.setCursor(0, 0);
-              LCD.print(Setup_TopRow + chosenName);
+              LCD.print(Setup_TopRow);
+              LCD.print(chosenName);
               LCD.setCursor(0, 1);
               LCD.print(Setup_BottomRow);
               if (pos_state == true)
@@ -399,13 +407,17 @@ void displayMenu() {
       }
       else {
         if (choiceChanged == false && Joybutton_xValue < Joybutton_xMinTreshold) {
-          if (tab > 0)
+          if (tab > 0) {
             --tab;
+            line = 0;
+          }
           choiceChanged = true;
         }
         if (choiceChanged == false && Joybutton_xValue > Joybutton_xMaxTreshold) {
-          if (tab < songNo - 1 && scores[tab + 1][0].Score > 0)
+          if (tab < songNo - 1 && scores[tab + 1][0].Score > 0) {
             ++tab;
+            line = 0;
+          }
           choiceChanged = true;
         }
         if (choiceChanged == false && Joybutton_yValue > Joybutton_yMaxTreshold) {
@@ -422,9 +434,15 @@ void displayMenu() {
           choiceChanged = false;
           LCD.clear();
           LCD.setCursor(0, 0);
+          for (int i = 0; i < (16 - Songs[tab].Name().length()) / 2; ++i)
+            LCD.print(' ');
           LCD.print(Songs[tab].Name());
           LCD.setCursor(0, 1);
-          LCD.print(String(line + 1) + ". " + scores[tab][line].Player + ' ' + String(scores[tab][line].Score));
+          LCD.print(String(line + 1));
+          LCD.print(". ");
+          LCD.print(scores[tab][line].Player);
+          LCD.print(' ');
+          LCD.print(String(scores[tab][line].Score));
         }
       }
       break;
