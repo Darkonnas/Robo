@@ -14,11 +14,11 @@ Board schematics: (to be added)
 
 Setup:
 
-The game includes a Menu screen in which the player is able to choose between what song he wants to play and the speed the tiles will appear on the screen (defaulted to 1 tile per second). After selecting/deciding on the settings, by selecting and pressing the "start" option on the menu.
+The game includes a Menu screen in which the player is able to choose between what song he wants to play and the playername that his score will be saved with. After selecting/deciding on the settings, by selecting and pressing the "start" option on the menu.
 
 Gameplay:
 
-The screen (LED matrix) is "split" into 4 imaginary areas (2x8 each) in which a tile might appear. When the tile appears, the player must wait for it to reach the bottom at the matrix and then press the corresponding pushbutton in order to play the tile. If the button is pressed correctly and at the correct time, the Piezzo buzzers will play the note that is mapped to that tile in the song. If not pressed correctly, a default buzz will be played and the game will end.
+The screen (LED matrix) is "split" into 4 imaginary areas (2x8 each) in which a tile might appear. When the tile appears, the player must wait for it to come into sight and then press the corresponding pushbutton in order to play the tile. If the button is pressed correctly and at the correct time, the Piezzo buzzers will play the note that is mapped to that tile in the song. If the note is missed, a default buzz will be played and the game will end.
 
 End screen:
 
